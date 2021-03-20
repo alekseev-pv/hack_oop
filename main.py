@@ -37,10 +37,15 @@ class Person:
 
     def damage_to_health(self, attack_damage: int) -> None:
         """Calculates damage when attacking by another character."""
-        self.person_health -= attack_damage - attack_damage * self.person_protection
+        self.person_health -= (attack_damage -
+                               attack_damage * self.person_protection)
+        self.person_health = round(self.person_health, 2)
+        if self.person_health < 0:
+            self.person_health = 0
 
 
 class Paladin(Person):
+    """The class that creates paladins."""
     def __init__(self, *args) -> None:
         super().__init__(*args)
         self.person_health *= 2
