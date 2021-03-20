@@ -79,7 +79,7 @@ def fight(defender, attacker):
     while defender.is_alive() and attacker.is_alive():
         print(
             Fore.GREEN + f'\nРаунд {hit_number} между '
-            f'Защитником {defender.person_name} и' 
+            f'Защитником {defender.person_name} и ' 
             f'Нападающим {attacker.person_name}\n' + Fore.RED
         )
         defender.get_attacked(attacker)
