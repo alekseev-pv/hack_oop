@@ -1,7 +1,6 @@
 from game_classes import Thing, Warrior, Paladin, Arena, PersonsGenerator
 
 if __name__ == "__main__":
-    #!!!добавить сортировку
     things = [
         Thing("Булава ярости", 0, -0.1, 40),
         Thing("Обычный меч", 0, 0, 15),

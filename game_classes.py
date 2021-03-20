@@ -128,6 +128,7 @@ class Arena:
     def __init__(self, persons: List[Person], things: List[Thing]):
         self.persons = persons
         self.things = things
+        self.things.sort(key=lambda thing: thing.protection)
 
     def equip_randomly(self):
         for person in self.persons:
