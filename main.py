@@ -1,4 +1,4 @@
-from game_classes import Thing, Warrior, Paladin, Arena, HeroesGenerator
+from game_classes import Thing, Warrior, Paladin, Arena, PersonsGenerator
 
 if __name__ == "__main__":
     things = [

@@ -88,7 +88,7 @@ class Warrior(Person):
         super().__init__(name, hit_points, protection, attack_damage * 2)
 
 
-class HeroesGenerator:
+class PersonsGenerator:
     MAX_HIT_POINT = 150
     MIN_HIT_POINT = 50
     MAX_PROTECTION = 0.4
