@@ -1,16 +1,8 @@
-from game_classes import (
-    Thing,
-    Warrior,
-    Paladin,
-    Arena,
-    PersonsGenerator,
-    Player,
-    NameGenerator,
-    ThingsGenerator,
-)
+from game_classes import (Arena, NameGenerator, Paladin, PersonsGenerator,
+                          Player, Thing, ThingsGenerator, Warrior)
 
 if __name__ == "__main__":
-    # сортировка в арене
+
     names_person = [
         "Анлион",
         "Дайладор",
@@ -74,7 +66,6 @@ if __name__ == "__main__":
     )
 
     player.set_person(player_person)
-    player.person.set_inventory([])
     player.take_thing(Thing("Обычный меч", 0, 0, 15))
     player.take_thing(Thing("Обычный меч", 0, 0, 15))
     player.take_thing(Thing("Кольцо бешенства", 0, -0.05, 15))

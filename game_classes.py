@@ -1,5 +1,5 @@
-from typing import List, Tuple, Optional, Dict
 import random
+from typing import Dict, List, Optional, Tuple
 
 
 class NameGenerator:
