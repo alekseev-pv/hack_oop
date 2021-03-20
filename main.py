@@ -39,13 +39,8 @@ if __name__ == "__main__":
 
     hg = PersonsGenerator(names_person)
     persons = hg.get_persons(10)
-
-    persons[0].current_hit_points = 50
-    persons[0].set_inventory([Thing("Кольцо здоровья", 0.2, 0, 0)])
-    persons[0].set_inventory([Thing("Кольцо здоровья", 0.1, 0, 0)])
-    persons[0].set_inventory([Thing("Кольцо здоровья", 0.3, 0, 0)])
     arena = Arena(persons, things)
     arena.equip_randomly()
     arena.fight()
 
-    print()
+    print(arena.persons[0])

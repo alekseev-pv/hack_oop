@@ -111,7 +111,7 @@ class Person:
     def reduce_hit_points(self, attack_damage: float) -> float:
         final_damage = attack_damage - attack_damage * self.final_protection
         final_damage = round(final_damage, 2)
-        self.final_hit_points -= final_damage
+        self.current_hit_points -= final_damage
         return final_damage
 
     def __str__(self):
