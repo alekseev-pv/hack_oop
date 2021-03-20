@@ -6,6 +6,8 @@ names = ["Тор", "Конан", "Фесс", "Гром", "Зевс",
         "Боромир", "Леонид", "Гор", "Онурис", "Нейт"]
 
 # Выбор случайного имени из списка имён
+
+
 def rnd_names():
     name = random.choice(names)
     return name
@@ -26,9 +28,9 @@ class Thing:
 
 
 class Person:
-    def __init__(self, pers_name, pers_hp, pers_attack, pers_defense):
+    def __init__(self, pers_name, pers_health, pers_attack, pers_defense):
         self.pers_name = pers_name
-        self.pers_hp = pers_hp
+        self.pers_health = pers_health
         self.pers_attack = pers_attack
         self.pers_defense = pers_defense
 
@@ -44,10 +46,15 @@ class Person:
 
 
 class Paladin(Person):
-    pass
+    def __init__(self, pers_name, pers_health, pers_attack, pers_defense):
+        super().__init__(pers_name, pers_health, pers_attack, pers_defense)
+        self.pers_health = pers_health * 2
+        self.pers_defense = pers_defense * 2
 
 # Класс наследуется от персонажа, при этом атака умножается на 2 в конструкторе
 
 
 class Warrior(Person):
-    pass
+    def __init__(self, pers_name, pers_health, pers_attack, pers_defense):
+        super().__init__(pers_name, pers_health, pers_attack, pers_defense)
+        self.pers_attack = pers_attack * 2
