@@ -53,10 +53,11 @@ class Person:
         bonus_hit_points = sum([thing.hit_points for thing in self.things])
         self.final_hit_points = self.hit_points + bonus_hit_points
 
-    def subtract_hit_points(self, attack_damage: float):
-        self.final_hit_points -= (
-            attack_damage - attack_damage * self.final_protection
-        )
+    def reduce_hit_points(self, attack_damage: float) -> float:
+        final_damage = attack_damage - attack_damage * self.final_protection
+        final_damage = round(final_damage, 2)
+        self.final_hit_points -= final_damage
+        return final_damage
 
     def __str__(self):
         return f"{self.__class__.__name__} {self.name}"
@@ -117,7 +118,7 @@ class PersonsGenerator:
             len(self.names) if number_persons is None else number_persons
         )
 
-        return [self.get_hero() for i in range(number_persons)]
+        return [self.get_person() for i in range(number_persons)]
 
 
 class Arena:
@@ -133,3 +134,15 @@ class Arena:
             number_equip = random.randint(self.MIN_THINGS, self.MAX_THINGS)
             things = random.choices(self.things, k=number_equip)
             person.set_things(things)
+
+    def round_fight(self):
+        couple_fighter = random.sample(self.persons, k=2)
+        attacker: Person = couple_fighter[0]
+        defender: Person = couple_fighter[1]
+        damage = defender.reduce_hit_points(attacker.final_attack_damage)
+        defender.final_hit_points = 0
+        if defender.final_hit_points <= 0:
+            self.persons.remove(defender)
+        print(
+            f"{attacker.name} наносит удар по {defender.name} на {damage} урона"
+        )

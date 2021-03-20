@@ -1,6 +1,7 @@
 from game_classes import Thing, Warrior, Paladin, Arena, PersonsGenerator
 
 if __name__ == "__main__":
+    #!!!добавить сортировку
     things = [
         Thing("Булава ярости", 0, -0.1, 40),
         Thing("Обычный меч", 0, 0, 15),
@@ -38,15 +39,9 @@ if __name__ == "__main__":
     ]
 
     hg = PersonsGenerator(names_person)
-    persons = [
-        Warrior("Ульфрик", 100, 0.1, 15),
-        Paladin("Тейтидан", 100, 0.1, 15),
-        hg.get_hero(),
-        hg.get_hero(),
-        hg.get_hero(),
-    ]
+    persons = hg.get_persons(10)
 
     arena = Arena(persons, things)
     arena.equip_randomly()
-
+    arena.round_fight()
     print()
