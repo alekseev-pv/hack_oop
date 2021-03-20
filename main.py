@@ -49,7 +49,13 @@ if __name__ == "__main__":
     persons = hg.get_persons(10)
 
     player = Player("Ivan")
-    player.create_person()
+    # персонажа можно создать через консоль
+    # player.create_person()
+    player_person = Warrior(
+        name="+++KaPaTe/I+++", hit_points=100, protection=20, attack_damage=20
+    )
+
+    player.set_person(player_person)
     player.person.set_inventory([])
     player.take_thing(Thing("Обычный меч", 0, 0, 15))
     player.take_thing(Thing("Обычный меч", 0, 0, 15))
@@ -58,6 +64,7 @@ if __name__ == "__main__":
 
     arena = Arena(persons, things)
     arena.equip_randomly()
-    arena.fight()
+    arena.add_player(player)
+    winner = arena.fight()
 
-    print(arena.persons[0])
+    print(f"ИИИИ победитель {winner}")

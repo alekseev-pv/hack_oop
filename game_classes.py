@@ -250,6 +250,9 @@ class Arena:
             things = random.choices(self.things, k=number_equip)
             person.set_inventory(things)
 
+    def add_player(self, player: Player):
+        self.persons.append(player.person)
+
     def round_fight(self):
         couple_fighter = random.sample(self.persons, k=2)
         attacker: Person = couple_fighter[0]
@@ -264,6 +267,8 @@ class Arena:
             self.persons.remove(defender)
             print(f"{defender.name} погиб от рук {attacker.name} ")
 
-    def fight(self):
+    def fight(self) -> Person:
+        """возвращает победителя"""
         while len(self.persons) != 1:
             self.round_fight()
+        return self.persons[0]
