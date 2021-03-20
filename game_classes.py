@@ -1,4 +1,5 @@
 from typing import List, Optional
+import random
 
 
 class Thing:
@@ -85,3 +86,18 @@ class Warrior(Person):
     ):
 
         super().__init__(name, hit_points, protection, attack_damage * 2)
+
+
+class Arena:
+    MIN_THINGS = 1
+    MAX_THINGS = 4
+
+    def __init__(self, persons: List[Person], things: List[Thing]):
+        self.persons = persons
+        self.things = things
+
+    def equip_randomly(self):
+        for person in self.persons:
+            number_equip = random.randint(self.MIN_THINGS, self.MAX_THINGS)
+            things = random.choices(self.things, k=number_equip)
+            person.set_things(things)
