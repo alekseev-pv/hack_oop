@@ -100,7 +100,7 @@ class PersonsGenerator:
     def __init__(self, names: List[str]):
         self.names = names
 
-    def get_hero(self):
+    def get_person(self) -> Person:
         name = random.choice(self.names)
         hit_points = random.randint(self.MIN_HIT_POINT, self.MAX_HIT_POINT)
         protection = random.uniform(self.MIN_PROTECTION, self.MAX_PROTECTION)
@@ -109,8 +109,15 @@ class PersonsGenerator:
         )
 
         random_class = random.choice(self.CLASSES)
-        hero = random_class(name, hit_points, protection, attack_damage)
-        return hero
+        person = random_class(name, hit_points, protection, attack_damage)
+        return person
+
+    def get_persons(self, number_persons: int = None) -> List[Person]:
+        number_persons = (
+            len(self.names) if number_persons is None else number_persons
+        )
+
+        return [self.get_hero() for i in range(number_persons)]
 
 
 class Arena:

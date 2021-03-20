@@ -37,7 +37,7 @@ if __name__ == "__main__":
         "Дамриган",
     ]
 
-    hg = HeroesGenerator(names_person)
+    hg = PersonsGenerator(names_person)
     persons = [
         Warrior("Ульфрик", 100, 0.1, 15),
         Paladin("Тейтидан", 100, 0.1, 15),
