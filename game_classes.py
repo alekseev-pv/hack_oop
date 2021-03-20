@@ -69,7 +69,6 @@ class Person:
         self.attack_damage = attack_damage
         self.final_attack_damage = attack_damage
 
-        self.things: Optional[List[Thing]] = None
         self.inventory = Inventory(self.MAX_SIZE_INVENTORY)
 
     def _update_protection(self):
@@ -89,9 +88,10 @@ class Person:
             [thing.hit_points for thing in self.inventory.things]
         )
         # для расчёта неполного здоровья при поднятии/снятии предмета
-        # для коррекции текущего здоровья, расчитываеся разница между новым итоговы
-        # и старым
+        # для коррекции текущего здоровья, расчитываеся разница
+        # между новым итоговым и старым итоговым
         # нужено более элегантное решение
+
         new_final_hit_points = (
             self.hit_points + self.hit_points * bonus_hit_points
         )
@@ -187,6 +187,8 @@ class PersonsGenerator:
 
 
 class Player:
+    classes_persons = [Paladin, Warrior]
+
     def __init__(
         self,
         name: str,
@@ -196,6 +198,35 @@ class Player:
 
     def set_person(self, person: Person):
         self.person = person
+        print(f"Игрок выбрал {person}")
+
+    def _choose_class(self) -> Person:
+        print("Выберете класс")
+        for i, cl in enumerate(self.classes_persons):
+            print(f"{i}) {cl.__name__}")
+        try:
+            number_class = int(input("Введите номер класса\n"))
+        except BaseException:
+            print("некорректный ввод, попробуйте ещё раз")
+            return self._choose_class()
+
+        if 0 <= number_class < len(self.classes_persons):
+            return self.classes_persons[number_class]
+        else:
+            print("некорректный ввод, попробуйте ещё раз")
+            return self._choose_class()
+
+    def create_person(self):
+
+        class_person = self._choose_class()
+        name = input("Введите имя персонажа\n")
+        hit_point = int(input("Введите количество очков здоровья\n"))
+        protection = int(input("Введите количество % бронки\n")) / 100
+        attack_damage = int(input("Введите количество очков силы\n"))
+
+        person = class_person(name, hit_point, protection, attack_damage)
+
+        self.set_person(person)
 
     def take_thing(self, thing: Thing):
         if self.person.add_thing(thing):
@@ -224,12 +255,14 @@ class Arena:
         attacker: Person = couple_fighter[0]
         defender: Person = couple_fighter[1]
         damage = defender.reduce_hit_points(attacker.final_attack_damage)
-        defender.final_hit_points = 0
-        if defender.final_hit_points <= 0:
-            self.persons.remove(defender)
         print(
-            f"{attacker.name} наносит удар по {defender.name} на {damage} урона"
+            f"{attacker.name} наносит удар "
+            f"по {defender.name} на {damage} урона"
         )
+
+        if defender.current_hit_points <= 0:
+            self.persons.remove(defender)
+            print(f"{defender.name} погиб от рук {attacker.name} ")
 
     def fight(self):
         while len(self.persons) != 1:

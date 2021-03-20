@@ -8,6 +8,7 @@ from game_classes import (
 )
 
 if __name__ == "__main__":
+    # сортировка в арене
     things = [
         Thing("Булава ярости", 0, -0.1, 40),
         Thing("Обычный меч", 0, 0, 15),
@@ -48,13 +49,12 @@ if __name__ == "__main__":
     persons = hg.get_persons(10)
 
     player = Player("Ivan")
-    player.set_person(persons[0])
+    player.create_person()
     player.person.set_inventory([])
     player.take_thing(Thing("Обычный меч", 0, 0, 15))
     player.take_thing(Thing("Обычный меч", 0, 0, 15))
-    player.take_thing(Thing("Обычный меч", 0, 0, 15))
-    player.take_thing(Thing("Обычный меч", 0, 0, 15))
-    player.take_thing(Thing("Обычный меч", 0, 0, 15))
+    player.take_thing(Thing("Кольцо бешенства", 0, -0.05, 15))
+    player.take_thing(Thing("Сапоги", 0, 0.05, 0))
 
     arena = Arena(persons, things)
     arena.equip_randomly()
