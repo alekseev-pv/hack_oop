@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # персонажа можно создать через консоль
     # player.create_person()
     player_person = Warrior(
-        name="+++KaPaTe/I+++", hit_points=100, protection=20, attack_damage=20
+        name="+++KaPaTe/I+++", hit_points=100, protection=0, attack_damage=20
     )
 
     player.set_person(player_person)

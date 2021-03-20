@@ -20,12 +20,12 @@ class Thing:
     def __init__(
         self,
         name: str,
-        hit_points: float = 0,
+        multiplier_hit_points: float = 0,
         protection: float = 0,
         attack_damage: float = 0,
     ):
         self.name = name
-        self.hit_points = hit_points
+        self.multiplier_hit_points = multiplier_hit_points
         self.protection = protection
         self.attack_damage = attack_damage
 
@@ -96,8 +96,8 @@ class Person:
         self.final_attack_damage = self.attack_damage + bonus_attack_damage
 
     def _update_hit_points(self):
-        bonus_hit_points = sum(
-            [thing.hit_points for thing in self.inventory.things]
+        sum_multiplier_hit_points = sum(
+            [thing.multiplier_hit_points for thing in self.inventory.things]
         )
         # для расчёта неполного здоровья при поднятии/снятии предмета
         # для коррекции текущего здоровья, расчитываеся разница
@@ -105,7 +105,7 @@ class Person:
         # нужено более элегантное решение
 
         new_final_hit_points = (
-            self.hit_points + self.hit_points * bonus_hit_points
+            self.hit_points + self.hit_points * sum_multiplier_hit_points
         )
         if self.final_hit_points != new_final_hit_points:
             correction_factor = new_final_hit_points / self.final_hit_points
