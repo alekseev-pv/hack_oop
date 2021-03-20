@@ -1,10 +1,9 @@
 import Classes
-from random import choice, randint, sample
 
-a = Classes.Arena()
-b = a.create_bots_with_things(10, 10)
+number_of_bots = 20
+number_of_things = 40
 
-a.bots_battle(b)
-
-
-
+arena = Classes.Arena()
+list_of_participants = arena.create_bots_with_things(number_of_things,
+                                                     number_of_bots)
+arena.bots_battle(list_of_participants)
