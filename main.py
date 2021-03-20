@@ -41,8 +41,8 @@ class Person:
     def set_things(self, things: List[Thing]):
         self.things = things
 
-        bonus_hit_point = sum([thing.protection for thing in self.things])
-        self.final_protection = self.protection + bonus_hit_point
+        bonus_protection = sum([thing.protection for thing in self.things])
+        self.final_protection = self.protection + bonus_protection
 
         bonus_attack_damage = sum(
             [thing.attack_damage for thing in self.things]
@@ -56,3 +56,32 @@ class Person:
         self.final_hit_points -= (
             attack_damage - attack_damage * self.final_protection
         )
+
+    def __str__(self):
+        return f"{self.__class__.__name__} {self.name}"
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class Paladin(Person):
+    def __init__(
+        self,
+        name: str,
+        hit_points: float,
+        protection: float,
+        attack_damage: float,
+    ):
+        super().__init__(name, hit_points * 2, protection * 2, attack_damage)
+
+
+class Warrior(Person):
+    def __init__(
+        self,
+        name: str,
+        hit_points: float,
+        protection: float,
+        attack_damage: float,
+    ):
+
+        super().__init__(name, hit_points, protection, attack_damage * 2)
