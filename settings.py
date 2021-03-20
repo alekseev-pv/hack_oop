@@ -1,7 +1,7 @@
 THINGS_NAMES = {
-    'Меч севера': 'weapon',
-    'Топор запада': 'weapon',
-    'Щит полуночи': 'weapon',
+    'Меч': 'weapon',
+    'Топор': 'weapon',
+    'Щит': 'weapon',
     'Шлем': 'armor',
     'Доспех': 'armor',
     'Наручи': 'armor',
@@ -44,7 +44,7 @@ BASE_SET = {
             'max': 10,
         },
         'protection': {
-            'min': 0,
+            'min': 0.01,
             'max': 0.1,
         },
         'life': {
@@ -58,7 +58,7 @@ BASE_SET = {
             'max': 10,
         },
         'protection': {
-            'min': 0,
+            'min': 0.01,
             'max': 0.05,
         },
         'life': {

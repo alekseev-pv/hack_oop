@@ -16,6 +16,8 @@ class Thing():
             format(self.name, self.protection, self.damage, self.life)
         )
 
+    def sort_key(s):
+        return s.protection
 
 class Person():
     def __init__(self, name, protection, damage, life):
@@ -149,7 +151,6 @@ class TournamentGrid():
                 i += 1
         return (msg)
 
-
 class Arena():
     def one_round(self, persons, grid):
         first_strike = random.randint(0, 1)
@@ -181,7 +182,9 @@ class Arena():
 
     def battle(self, max_persons, max_items):
         print('Это Арена, а не игра!')
-        things = BattlePrepare().creation('thing', max_items)
+        things = sorted(
+            BattlePrepare().creation('thing', max_items), key=Thing.sort_key
+        )
         print('Created {} items'.format(len(things)))
         for item in things:
             print(item)
