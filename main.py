@@ -1,7 +1,8 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
+import random
 
 
-class Thing():
+class Thing:
     def __init__(self, name: str, hp: float = 0,
                  damage: float = 0, protection: float = 0):
         self.name = name
@@ -10,7 +11,7 @@ class Thing():
         self.hp = hp
 
 
-class Person():
+class Person:
     def __init__(self, name: str, hp: float, damage: float, protection: float):
         self.name = name
         self.hp = hp
@@ -42,11 +43,55 @@ class Person():
         return True
 
 
+class Fighter(Person):
+    def __init__(self, name: str, hp: float, damage: float, protection: float):
+        super().__init__(name, hp, damage, protection)
+
+
 class Paladin(Person):
     def __init__(self, name: str, hp: float, damage: float, protection: float):
-        super().__init__(name, hp * 2, damage, protection * 2)
+        super().__init__(name, hp * 2, damage / 2, protection * 2)
 
 
 class Warrior(Person):
     def __init__(self, name: str, hp: float, damage: float, protection: float):
-        super().__init__(name, hp, damage * 2, protection)
+        super().__init__(name, hp / 2, damage * 2, protection / 2)
+
+
+class Person_generator:
+    Min_HP = 250
+    Max_HP = 500
+    Min_protection = 0.0
+    Max_protection = 0.5
+    Min_damage = 20
+    Max_damage = 45
+    Classes: Tuple[Fighter, Paladin, Warrior] = (Fighter, Paladin, Warrior)
+    Names = [
+        "Aaron",
+        "Saimon",
+        "Wolter",
+        "Westheimer",
+        "Emilia",
+        "Kratos",
+        "Robert",
+        "Mara",
+        "Ceasar",
+        "Ahmad",
+    ]
+
+    def __init__(self, names: List[str]):
+        self.names = names
+
+    def create_person(self, name) -> Person:
+        hp = random.randint(self.Min_HP, self.Max_HP)
+        protect = random.uniform(self.Min_protection, self.Max_protection)
+        damage = random.randint(self.Min_damage, self.Max_damage)
+        random_class = random.choice(self.Classes)
+        person = random_class(name, hp, protect, damage)
+        return person
+
+    def create_persons(self, persons_number: int = None) -> List[Person]:
+        persons_number = len(
+            self.names) if persons_number is None else persons_number
+        names = random.choices(self.names, k=persons_number)
+        return [self.create_person(name) for name in names]
