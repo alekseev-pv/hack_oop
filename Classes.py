@@ -69,10 +69,20 @@ class Warrior(Person):
         self.attack = attack * 2
 
 
+class Witcher(Person):
+    def __init__(self, name, hp, attack, defense):
+        super().__init__(name, hp, attack, defense)
+        self.attack = attack * 2
+        self.hp = hp * 2
+
+        self.things = [Thing('Ведьмачий медальон', 3, 1, 0.02)]
+
+
 class Arena:
     POSSIBLE_CLASSES = {
         'Paladin': Paladin,
-        'Warrior': Warrior
+        'Warrior': Warrior,
+        'Witcher': Witcher
     }
 
     def create_random_thing(self):
@@ -118,25 +128,23 @@ class Arena:
             list_of_bots.append(obj.create_random_character())
 
         for obj in list_of_bots:
-            num_of_things_per_bot = randint(2, 4)
+            num_of_things_per_bot = randint(1, 3)
             things_per_bot = sample(list_of_things, num_of_things_per_bot)
             obj.set_things(things_per_bot)
         return list_of_bots
 
     def bots_battle(self, list_of_participants):
         colorama.init()
-        print(Fore.MAGENTA + 'Участники сегодняшнего состязания:' +
+        print(Fore.MAGENTA + 'Представляем участников сегодняшней битвы!' +
               Style.RESET_ALL)
         for obj in list_of_participants:
-            str_out = map(lambda x, y: x.name + ', ' + y.name, obj.things)
             print(f'{Fore.CYAN + obj.name + Style.RESET_ALL} со своим '
                   f'снаряжением: ' + Fore.YELLOW)
             for i in range(len(obj.things)):
                 if i == len(obj.things) - 1:
                     print(obj.things[i].name + Style.RESET_ALL)
                 else:
-                    print(obj.things[i].name, end=', ')
-
+                    print(obj.things[i].name, end='; ')
 
         while len(list_of_participants) > 1:
             couple = sample(list_of_participants, 2)
@@ -145,15 +153,19 @@ class Arena:
 
             damage = list_of_participants[index1].attack_damage()
             final_damage = list_of_participants[index0].take_damage(damage)
+
             attacker = list_of_participants[index1].name
             defender = list_of_participants[index0].name
-            delta = damage - final_damage
+            hp = list_of_participants[index0].full_hp
+            if hp < 0:
+                hp = 0
             print(f'{Fore.MAGENTA + attacker + Style.RESET_ALL} '
                   f'наносит удар по '
                   f'{Fore.CYAN + defender + Style.RESET_ALL} '
-                  f'на {damage} урона, но защитное снаряжение '
+                  f'на {Fore.RED + str(final_damage) + Style.RESET_ALL} урона, у '
                   f'{Fore.CYAN + defender + Style.RESET_ALL} '
-                  f'поглощает {delta} урона')
+                  f'остается {Fore.GREEN + str(hp) + Style.RESET_ALL} '
+                  f'ед. здоровья')
             if not list_of_participants[index0].is_alive():
                 print(colorama.Fore.RED +
                       f'{defender}'
