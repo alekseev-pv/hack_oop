@@ -85,7 +85,20 @@ class Person:
         bonus_hit_points = sum(
             [thing.hit_points for thing in self.inventory.things]
         )
-        self.final_hit_points = self.hit_points + bonus_hit_points
+
+        # для расчёта неполного здоровья при поднятии/снятии предмета
+        # для коррекции текущего здоровья, расчитываеся разница между новым итоговы
+        # и старым
+        # нужено более элегантное решение
+        new_final_hit_points = (
+            self.hit_points + self.hit_points * bonus_hit_points
+        )
+        if self.final_hit_points != new_final_hit_points:
+            correction_factor = new_final_hit_points / self.final_hit_points
+            self.current_hit_points = (
+                self.current_hit_points * correction_factor
+            )
+            self.final_hit_points = new_final_hit_points
 
     def set_inventory(self, things: List[Thing]):
         self.inventory.set_things(things)

@@ -6,9 +6,9 @@ if __name__ == "__main__":
         Thing("Обычный меч", 0, 0, 15),
         Thing("Топор гнома", 0, 0, 20),
         Thing("Щит милосердия", 0, 0.05, 0),
-        Thing("Стальная кираса", 20, 0.1, 0),
+        Thing("Стальная кираса", 0.2, 0.1, 0),
         Thing("Сапоги", 0, 0.05, 0),
-        Thing("Кольцо здоровья", 20, 0, 0),
+        Thing("Кольцо здоровья", 0.20, 0, 0),
         Thing("Кольцо защиты", 0, 0.1, 0),
         Thing("Кольцо бешенства", 0, -0.05, 15),
     ]
@@ -40,6 +40,10 @@ if __name__ == "__main__":
     hg = PersonsGenerator(names_person)
     persons = hg.get_persons(10)
 
+    persons[0].current_hit_points = 50
+    persons[0].set_inventory([Thing("Кольцо здоровья", 0.2, 0, 0)])
+    persons[0].set_inventory([Thing("Кольцо здоровья", 0.1, 0, 0)])
+    persons[0].set_inventory([Thing("Кольцо здоровья", 0.3, 0, 0)])
     arena = Arena(persons, things)
     arena.equip_randomly()
     arena.fight()
