@@ -64,18 +64,21 @@ def dress_fighters() -> None:
 def game() -> None:
     """Start the game."""
     duel = 0
-    print('Приветсвуем всех участников игры Арена, бои начинаются!')
+    print('Приветсвуем всех участников игры "Арена"!')
     print()
+    print('Представляем вам бойцов:')
 
     for fighter in fighters:
         print(f'Имя бойца: {fighter.person_name}, '
               f'Защита бойца: {fighter.person_protection}, '
               f'Атака бойца: {fighter.person_attack}, '
-              f'Здоровье бойца: {fighter.person_health}', end=', ')
-        print('Вещи бойца:', end=' ')
+              f'Здоровье бойца: {fighter.person_health}',
+              'Вещи бойца: ', end='')
         for thing in fighter.person_things:
             print(f'{thing}', end=' ')
         print()
+    print()
+    print('Бои начинаются!')
 
     while len(fighters) > 1:
         print()
