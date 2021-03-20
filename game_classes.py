@@ -121,6 +121,18 @@ class PersonsGenerator:
         return [self.get_person(name) for name in names]
 
 
+class Player:
+    def __init__(
+        self,
+        name: str,
+    ):
+        self.name = name
+        self.person: Optional[Person] = None
+
+    def set_person(self, person: Person):
+        self.person = person
+
+
 class Arena:
     MIN_THINGS = 1
     MAX_THINGS = 4
