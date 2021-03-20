@@ -1,0 +1,22 @@
+.git/*
+env/
+venv/
+.venv
+.venv/
+
+__pycache__/
+.vscode/
+.vscode/settings.json
+*.py[cod]
+
+.idea
+.DS_Store
+.AppleDouble
+.LSOverride
+
+*.sublime-project
+*.sublime-workspace
+
+REview/
+Untitled-1.py
+Условие задачи.txt
