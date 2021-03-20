@@ -19,7 +19,7 @@ class Game:
         """Create players with random class and charecteristics.
         Takes created list of names.
         """
-        for name in players_names_list:
+        for name in random.sample(players_names_list, 10):
             random_base_deffend = round(random.uniform(0, 0.3), 2)
             random_hp = random.randint(1, 100)
             random_base_attack = random.randint(1, 30)
@@ -68,6 +68,7 @@ class Game:
                 break
 
     def start_game(self) -> None:
+        """Start gaming with print in consile with rich" """
         live_players = self.game_players.copy()
         rounds = 0
         while len(live_players) > 1:
