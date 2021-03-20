@@ -30,6 +30,36 @@ class Thing:
         self.attack_damage = attack_damage
 
 
+class ThingsGenerator:
+    MAX_MULTIPLIER_HIT_POINTS = 1
+    MIN_MULTIPLIER_HIT_POINTS = 0
+    MAX_PROTECTION = 0.09
+    MIN_PROTECTION = 0.0
+    MAX_ATTACK_DAMAGE = 50
+    MIN_ATTACK_DAMAGE = 0
+
+    def __init__(self, names: List[str]):
+        self.names = names
+
+    def get_things(self):
+        things = []
+        for name in self.names:
+            multiplier_hit_points = random.uniform(
+                self.MIN_MULTIPLIER_HIT_POINTS, self.MAX_MULTIPLIER_HIT_POINTS
+            )
+            protection = random.uniform(
+                self.MIN_PROTECTION, self.MAX_PROTECTION
+            )
+            attack_damage = random.randint(
+                self.MIN_ATTACK_DAMAGE, self.MAX_ATTACK_DAMAGE
+            )
+            thing = Thing(
+                name, multiplier_hit_points, protection, attack_damage
+            )
+            things.append(thing)
+        return things
+
+
 class InventoryError(Exception):
     pass
 
@@ -169,7 +199,7 @@ class Warrior(Person):
 class PersonsGenerator:
     MAX_HIT_POINT = 150
     MIN_HIT_POINT = 50
-    MAX_PROTECTION = 0.4
+    MAX_PROTECTION = 0.2
     MIN_PROTECTION = 0.0
     MAX_ATTACK_DAMAGE = 40
     MIN_ATTACL_DAMAGE = 5

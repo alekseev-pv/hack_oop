@@ -6,22 +6,11 @@ from game_classes import (
     PersonsGenerator,
     Player,
     NameGenerator,
+    ThingsGenerator,
 )
 
 if __name__ == "__main__":
     # сортировка в арене
-    things = [
-        Thing("Булава ярости", 0, -0.1, 40),
-        Thing("Обычный меч", 0, 0, 15),
-        Thing("Топор гнома", 0, 0, 20),
-        Thing("Щит милосердия", 0, 0.05, 0),
-        Thing("Стальная кираса", 0.2, 0.1, 0),
-        Thing("Сапоги", 0, 0.05, 0),
-        Thing("Кольцо здоровья", 0.20, 0, 0),
-        Thing("Кольцо защиты", 0, 0.1, 0),
-        Thing("Кольцо бешенства", 0, -0.05, 15),
-    ]
-
     names_person = [
         "Анлион",
         "Дайладор",
@@ -71,6 +60,8 @@ if __name__ == "__main__":
 
     names_thing_gen = NameGenerator(nouns, subjects)
     names_thing = names_thing_gen.get_names(20)
+    things_gen = ThingsGenerator(names_thing)
+    things = things_gen.get_things()
 
     persons_gen = PersonsGenerator(names_person)
     persons = persons_gen.get_persons(10)
@@ -79,7 +70,7 @@ if __name__ == "__main__":
     # персонажа можно создать через консоль
     # player.create_person()
     player_person = Warrior(
-        name="+++KaPaTe/I+++", hit_points=100, protection=0, attack_damage=20
+        name="+++KaPaTe/l+++", hit_points=100, protection=0, attack_damage=20
     )
 
     player.set_person(player_person)
