@@ -42,6 +42,12 @@ class Person:
             return False
         return True
 
+    def __str__(self):
+        return f"{self.name} {self.__class__.__name__}"
+
+    def __repr__(self):
+        return f"{self.name} {self.__class__.__name__}"
+
 
 class Fighter(Person):
     def __init__(self, name: str, hp: float, damage: float, protection: float):
