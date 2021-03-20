@@ -1,6 +1,7 @@
 import random
 from typing import Dict, List, Optional, Tuple
-from colorama import Fore, Back, Style
+
+from colorama import Back, Fore, Style
 
 
 class NameGenerator:
