@@ -146,3 +146,7 @@ class Arena:
         print(
             f"{attacker.name} наносит удар по {defender.name} на {damage} урона"
         )
+
+    def fight(self):
+        while len(self.persons) != 1:
+            self.round_fight()
