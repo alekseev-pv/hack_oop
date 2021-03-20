@@ -1,4 +1,4 @@
-from typing import List, Tuple, Optional, Union
+from typing import List, Tuple, Optional
 import random
 
 
@@ -37,11 +37,13 @@ class Inventory:
         self.things.append(thing)
         return True
 
-    def set_things(self, things: List[Thing]) -> bool:
+    def set_things(self, things: List[Thing]):
         if len(self.things) > self.size:
             raise InventoryOverflowError
         self.things = [thing for thing in things]
-        return True
+
+    def remove_thing(self, index):
+        self.things.pop(index)
 
 
 class Person:
@@ -57,6 +59,7 @@ class Person:
         self.name = name
 
         self.hit_points = hit_points
+        self.current_hit_points = hit_points
         self.final_hit_points = hit_points
 
         self.protection = protection
@@ -68,20 +71,29 @@ class Person:
         self.things: Optional[List[Thing]] = None
         self.inventory = Inventory(self.MAX_SIZE_INVENTORY)
 
-    def set_things(self, things: List[Thing]):
-        self.things = things
-        self.inventory.set_things(things)
-
-        bonus_protection = sum([thing.protection for thing in self.things])
+    def update_characteristics(self):
+        bonus_protection = sum(
+            [thing.protection for thing in self.inventory.things]
+        )
         self.final_protection = self.protection + bonus_protection
 
         bonus_attack_damage = sum(
-            [thing.attack_damage for thing in self.things]
+            [thing.attack_damage for thing in self.inventory.things]
         )
         self.final_attack_damage = self.attack_damage + bonus_attack_damage
 
-        bonus_hit_points = sum([thing.hit_points for thing in self.things])
+        bonus_hit_points = sum(
+            [thing.hit_points for thing in self.inventory.things]
+        )
         self.final_hit_points = self.hit_points + bonus_hit_points
+
+    def set_inventory(self, things: List[Thing]):
+        self.inventory.set_things(things)
+        self.update_characteristics()
+
+    def add_thing(self, thing: Thing):
+        self.inventory.add_thing(Thing)
+        self.update_characteristics()
 
     def reduce_hit_points(self, attack_damage: float) -> float:
         final_damage = attack_damage - attack_damage * self.final_protection
@@ -176,7 +188,7 @@ class Arena:
         for person in self.persons:
             number_equip = random.randint(self.MIN_THINGS, self.MAX_THINGS)
             things = random.choices(self.things, k=number_equip)
-            person.set_things(things)
+            person.set_inventory(things)
 
     def round_fight(self):
         couple_fighter = random.sample(self.persons, k=2)
