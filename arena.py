@@ -1,5 +1,5 @@
 from things import Thing
-from persons import Paladin, Warrior, Person
+from persons import Paladin, Warrior, Goblin, Elf
 import random
 
 
@@ -22,18 +22,20 @@ class Arena:
         for _ in range(random.randint(start, end)):
             type_thing = name_thing[random.choice(list(name_thing))]
             name = type_thing[random.randint(0, len(type_thing) - 1)]
-            defense_percentage = random.uniform(0.01, 0.1)
-            attack = random.random()
-            life = random.random()
-            self._things.append(Thing(name, defense_percentage, attack, life))
+            defense = random.uniform(0.01, 0.1)
+            attack = random.randint(-10, 10)
+            hit_poins = random.randint(-10, 10)
+            for_name = {defense: 'улучшеная защита', attack: 'улучшеная атака', hit_poins: 'больше здоровья'}
+            best_property = max(defense, attack, hit_poins)
+            name = f'{name} {for_name[best_property]}'
+            self._things.append(Thing(name, defense, attack, hit_poins))
         self._things.sort(key=lambda x: x.defense)
 
     def create_persons(self, name_persons, count=10):
-        class_persons = (Paladin, Warrior)
-        for _ in range(count):
-            name = random.choice(name_persons)
-            while name in [person.name for person in self._persons]:
-                name = random.choice(name_persons)
+        class_persons = (Paladin, Warrior, Goblin, Elf)
+        names = random.sample(name_persons, k=count)
+        for i in range(count):
+            name = names[i]
             hp = random.randint(50, 100)
             attack = random.randint(10, 30)
             defense_percentage = random.randint(10, 40)
@@ -58,8 +60,17 @@ class Arena:
             print(f'{second_person} наносит удар по {first_person} на {count_damage: .2f} урона')
             if first_person.is_alive:
                 self._persons.append(first_person)
+            else:
+                how = random.choice(['достойно', 'отважно', 'безрассудно', 'смело'])
+                print(f'{first_person} - пал. Он сражался {how}!')
+        winner = self.get_persons()[0]
 
-        print(f'Battle win {self.get_persons()[0]}')
+        things = ', '.join(map(str, winner.things)) if winner.things else 'не брал'
+        print(f'Битву выиграл {winner}.\nОставшееся здоровье - {winner.hit_points: .1f}, '
+              f'урон - {winner.attack_damage: .1f}, '
+              f'защита - {winner.defense: .1f}, '
+              f'вещи - {things}.'
+              )
 
 
 if __name__ == '__main__':
@@ -80,7 +91,7 @@ if __name__ == '__main__':
     arena = Arena('Колизей')
     arena.creating_things(name_thing)
     arena.create_persons(name_persons)
-    arena.get_things()
+    arena.give_things_persons()
     arena.battle()
 
 

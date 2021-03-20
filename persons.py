@@ -50,6 +50,22 @@ class Paladin(Person):
         self.defense *= 2
 
 
+class Elf(Person):
+    def __init__(self, name, hp, attack, defense):
+        super().__init__(name, hp, attack, defense)
+        self.hit_points *= 1.1
+        self.defense *= 1.2
+        self.attack_damage += 15
+
+
+class Goblin(Person):
+    def __init__(self, name, hp, attack, defense):
+        super().__init__(name, hp, attack, defense)
+        self.hit_points *= 3
+        self.defense *= 2
+        self.attack_damage *= 0.9
+
+
 if __name__ == '__main__':
     paladin = Paladin('paladin', 10, 10, 10)
     warrior = Warrior('warrior', 10, 10, 10)

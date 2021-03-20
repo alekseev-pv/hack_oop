@@ -12,10 +12,7 @@ class Thing:
         return self.defense
 
     def __str__(self):
-        return (f'{self.name},\ndefense_percentage = {self.defense_percentage: 0.2}; '
-                f'attack = {self.attack_damage: 0.2}; '
-                f'life = {self.hit_poins: 0.2}'
-                )
+        return f'{self.name}'
 
     def __repr__(self):
         return f'{self.name}'
