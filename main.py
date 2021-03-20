@@ -43,4 +43,5 @@ if __name__ == "__main__":
     arena = Arena(persons, things)
     arena.equip_randomly()
     arena.fight()
+
     print()

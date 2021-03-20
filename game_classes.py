@@ -18,6 +18,14 @@ class Thing:
         self.attack_damage = attack_damage
 
 
+class InventoryError(Exception):
+    pass
+
+
+class InventoryOverflowError(InventoryError):
+    pass
+
+
 class Inventory:
     def __init__(self, size: int):
         self.size = size
@@ -29,8 +37,16 @@ class Inventory:
         self.things.append(thing)
         return True
 
+    def set_things(self, things: List[Thing]) -> bool:
+        if len(self.things) > self.size:
+            raise InventoryOverflowError
+        self.things = [thing for thing in things]
+        return True
+
 
 class Person:
+    MAX_SIZE_INVENTORY = 4
+
     def __init__(
         self,
         name: str,
@@ -50,9 +66,11 @@ class Person:
         self.final_attack_damage = attack_damage
 
         self.things: Optional[List[Thing]] = None
+        self.inventory = Inventory(self.MAX_SIZE_INVENTORY)
 
     def set_things(self, things: List[Thing]):
         self.things = things
+        self.inventory.set_things(things)
 
         bonus_protection = sum([thing.protection for thing in self.things])
         self.final_protection = self.protection + bonus_protection
