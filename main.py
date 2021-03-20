@@ -149,6 +149,8 @@ if __name__ == '__main__':
                 if 0 < in_data < 20:
                     count_of_fighters = in_data
                     break
+                else:
+                    continue
             except ValueError:
                 continue
         valid_count = True
