@@ -1,6 +1,6 @@
 import random
 import time
-from typing import List, Optional, Any
+from typing import List, Any
 
 
 class Thing():
@@ -81,9 +81,6 @@ names: List[str] = [
     'Aspen', 'Vidgis', 'Trjud', 'Dietmar', 'Frigg']
 
 
-# def create_fighters(count: int = 10) -> List[Person]:
-#    chosen_names = random.sample(names, k=count)
-
 def create_fighters_by_names(names: List[str]) -> List[Person]:
     persons: List[Person] = []
     for name in names:
@@ -100,8 +97,11 @@ def create_fighters_by_names(names: List[str]) -> List[Person]:
 
 
 def to_equip(persons: List[Person]) -> None:
+
+    things: List[Thing]
+
     for person in persons:
-        things: List[Thing] = random.sample(all_things, k=random.randrange(1, 5))
+        things = random.sample(all_things, k=random.randrange(1, 5))
         person.set_things(things)
 
 
@@ -134,23 +134,24 @@ if __name__ == '__main__':
 
     user_name: str = input('Введите своё имя [random]: ')
     count_of_fighters: int = 9
-    in_data: Any = None 
+    in_data: Any = None
     valid_count: bool = False
 # username
     if user_name == '':
         user_name = random.choice(names)
-        print(f'Вашего героя зовут {user_name}')
+    print(f'Вашего героя зовут {user_name}')
 # count of fighters
-        while valid_count is False:
-            in_data = input('Введите число соперников от 1 до 19 [9]:')
-            if in_data != '':
-                try:
-                    in_data = int(in_data)
-                    if 0 < in_data < 20:
-                        count_of_fighters = in_data; break
-                except:
-                    continue
-            valid_count = True
+    while valid_count is False:
+        in_data = input('Введите число Ваших соперников от 1 до 19 [9]:')
+        if in_data != '':
+            try:
+                in_data = int(in_data)
+                if 0 < in_data < 20:
+                    count_of_fighters = in_data
+                    break
+            except ValueError:
+                continue
+        valid_count = True
 
     time.sleep(1)
     chosen_names = random.sample(names, k=count_of_fighters)
