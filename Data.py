@@ -24,9 +24,11 @@ ADJECTIVE_NAMES = [
 VALUES = {
     'random_thing_defense': float('{:.2f}'.format(uniform(0.01, 0.05))),
     'random_thing_attack': randint(2, 5),
-    'random_thing_hp': randint(0, 5),
+    'random_thing_hp': randint(1, 5),
     'random_character_defense': float('{:.2f}'.format(uniform(0.1, 0.2))),
     'random_character_attack': randint(8, 13),
     'random_character_hp': randint(40, 55)
 
 }
+
+

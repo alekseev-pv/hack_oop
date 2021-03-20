@@ -1,5 +1,8 @@
-from random import choice, randint, sample
+from random import choice, randint, sample, uniform
 import Data
+import colorama
+from colorama import Fore, Style
+from math import floor
 
 
 class Thing:
@@ -42,8 +45,9 @@ class Person:
         return protection
 
     def take_damage(self, damage):
-        self.full_hp = self.full_hp - (damage -
-                                       damage * self.final_protection())
+        full_damage = floor(damage - damage * self.final_protection())
+        self.full_hp = self.full_hp - full_damage
+        return full_damage
 
     def is_alive(self):
         if self.full_hp <= 0:
@@ -55,7 +59,7 @@ class Person:
 class Paladin(Person):
     def __init__(self, name, hp, attack, defense):
         super().__init__(name, hp, attack, defense)
-        self.name = name * 2
+        self.hp = hp * 2
         self.defense = defense * 2
 
 
@@ -71,53 +75,91 @@ class Arena:
         'Warrior': Warrior
     }
 
-    def create_random_thing(self,
-                            adjective=choice(Data.ADJECTIVE_THINGS),
-                            name=choice(Data.THINGS)):
+    def create_random_thing(self):
+        adjective = choice(Data.ADJECTIVE_THINGS)
+        name = choice(Data.THINGS)
         full_name = adjective + name
+        # new_thing = Thing(full_name,
+        #                   Data.VALUES['random_thing_hp'],
+        #                   Data.VALUES['random_thing_attack'],
+        #                   Data.VALUES['random_thing_defense'])
         new_thing = Thing(full_name,
-                          Data.VALUES['random_thing_hp'],
-                          Data.VALUES['random_thing_attack'],
-                          Data.VALUES['random_thing_defense'])
+                          randint(1, 5),
+                          randint(2, 5),
+                          float('{:.2f}'.format(uniform(0.01, 0.05))))
         return new_thing
 
-    def create_random_character(self,
-                                adjective=choice(Data.ADJECTIVE_NAMES),
-                                name=choice(Data.NAMES)
-                                ):
+    def create_random_character(self):
+        name = choice(Data.NAMES)
+        adjective = choice(Data.ADJECTIVE_NAMES)
+
         cls = choice(list(Arena.POSSIBLE_CLASSES.keys()))
         full_name = name + adjective
-        attack = Data.VALUES['random_character_attack']
-        defense = Data.VALUES['random_character_defense']
-        hp = Data.VALUES['random_character_hp']
+        # attack = Data.VALUES['random_character_attack']
+        # defense = Data.VALUES['random_character_defense']
+        # hp = Data.VALUES['random_character_hp']
+        attack = randint(8, 13)
+        defense = float('{:.2f}'.format(uniform(0.1, 0.2)))
+        hp = randint(40, 55)
         character = Arena.POSSIBLE_CLASSES[cls](full_name, hp, attack, defense)
         return character
 
     def create_bots_with_things(self, number_of_things, number_of_bots):
-        list_of_things = [self.create_random_thing()
-                          for _ in range(number_of_things)]
+        list_of_things = []
+        for _ in range(number_of_things):
+            obj = Arena()
+            list_of_things.append(obj.create_random_thing())
+
         list_of_things.sort(key=lambda x: x.defense)
-        list_of_bots = [self.create_random_character()
-                        for _ in range(number_of_bots)]
+
+        list_of_bots = []
+        for _ in range(number_of_bots):
+            obj = Arena()
+            list_of_bots.append(obj.create_random_character())
+
         for obj in list_of_bots:
-            num_of_things_per_bot = randint(1, 4)
+            num_of_things_per_bot = randint(2, 4)
             things_per_bot = sample(list_of_things, num_of_things_per_bot)
             obj.set_things(things_per_bot)
         return list_of_bots
 
     def bots_battle(self, list_of_participants):
+        colorama.init()
+        print(Fore.MAGENTA + 'Участники сегодняшнего состязания:' +
+              Style.RESET_ALL)
+        for obj in list_of_participants:
+            str_out = map(lambda x, y: x.name + ', ' + y.name, obj.things)
+            print(f'{Fore.CYAN + obj.name + Style.RESET_ALL} со своим '
+                  f'снаряжением: ' + Fore.YELLOW)
+            for i in range(len(obj.things)):
+                if i == len(obj.things) - 1:
+                    print(obj.things[i].name + Style.RESET_ALL)
+                else:
+                    print(obj.things[i].name, end=', ')
+
+
         while len(list_of_participants) > 1:
             couple = sample(list_of_participants, 2)
             index0 = list_of_participants.index(couple[0])
             index1 = list_of_participants.index(couple[1])
 
             damage = list_of_participants[index1].attack_damage()
-            list_of_participants[index0].take_damage(damage)
+            final_damage = list_of_participants[index0].take_damage(damage)
             attacker = list_of_participants[index1].name
             defender = list_of_participants[index0].name
-            print(f'{attacker} наносит удар по '
-                  f'{defender} на {damage} урона')
+            delta = damage - final_damage
+            print(f'{Fore.MAGENTA + attacker + Style.RESET_ALL} '
+                  f'наносит удар по '
+                  f'{Fore.CYAN + defender + Style.RESET_ALL} '
+                  f'на {damage} урона, но защитное снаряжение '
+                  f'{Fore.CYAN + defender + Style.RESET_ALL} '
+                  f'поглощает {delta} урона')
             if not list_of_participants[index0].is_alive():
+                print(colorama.Fore.RED +
+                      f'{defender}'
+                      f' погибает!')
+                print(colorama.Style.RESET_ALL)
+
                 list_of_participants.pop(index0)
         winner = list_of_participants[0].name
-        print(f'{winner} - победитель')
+        print(f'{Fore.GREEN + winner + Style.RESET_ALL} - победитель')
