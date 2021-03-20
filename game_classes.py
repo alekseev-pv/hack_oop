@@ -1,4 +1,4 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Union
 import random
 
 
@@ -16,6 +16,18 @@ class Thing:
         self.hit_points = hit_points
         self.protection = protection
         self.attack_damage = attack_damage
+
+
+class Inventory:
+    def __init__(self, size: int):
+        self.size = size
+        self.things: List[Thing] = []
+
+    def add_thing(self, thing: Thing) -> bool:
+        if len(self.thing) >= self.size:
+            return False
+        self.things.append(thing)
+        return True
 
 
 class Person:
