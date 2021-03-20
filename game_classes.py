@@ -32,7 +32,7 @@ class Inventory:
         self.things: List[Thing] = []
 
     def add_thing(self, thing: Thing) -> bool:
-        if len(self.thing) >= self.size:
+        if len(self.things) >= self.size:
             return False
         self.things.append(thing)
         return True
@@ -71,21 +71,22 @@ class Person:
         self.things: Optional[List[Thing]] = None
         self.inventory = Inventory(self.MAX_SIZE_INVENTORY)
 
-    def update_characteristics(self):
+    def _update_protection(self):
         bonus_protection = sum(
             [thing.protection for thing in self.inventory.things]
         )
         self.final_protection = self.protection + bonus_protection
 
+    def _update_attack_damage(self):
         bonus_attack_damage = sum(
             [thing.attack_damage for thing in self.inventory.things]
         )
         self.final_attack_damage = self.attack_damage + bonus_attack_damage
 
+    def _update_hit_points(self):
         bonus_hit_points = sum(
             [thing.hit_points for thing in self.inventory.things]
         )
-
         # для расчёта неполного здоровья при поднятии/снятии предмета
         # для коррекции текущего здоровья, расчитываеся разница между новым итоговы
         # и старым
@@ -100,12 +101,17 @@ class Person:
             )
             self.final_hit_points = new_final_hit_points
 
+    def update_characteristics(self):
+        self._update_protection()
+        self._update_attack_damage()
+        self._update_hit_points()
+
     def set_inventory(self, things: List[Thing]):
         self.inventory.set_things(things)
         self.update_characteristics()
 
     def add_thing(self, thing: Thing):
-        self.inventory.add_thing(Thing)
+        self.inventory.add_thing(thing)
         self.update_characteristics()
 
     def reduce_hit_points(self, attack_damage: float) -> float:
@@ -186,6 +192,10 @@ class Player:
 
     def set_person(self, person: Person):
         self.person = person
+
+    def take_thing(self, thing: Thing):
+        if self.person.add_thing(thing):
+            print(f"self.person взял {thing.name}")
 
 
 class Arena:

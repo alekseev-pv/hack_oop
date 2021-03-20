@@ -1,4 +1,11 @@
-from game_classes import Thing, Warrior, Paladin, Arena, PersonsGenerator
+from game_classes import (
+    Thing,
+    Warrior,
+    Paladin,
+    Arena,
+    PersonsGenerator,
+    Player,
+)
 
 if __name__ == "__main__":
     things = [
@@ -39,6 +46,16 @@ if __name__ == "__main__":
 
     hg = PersonsGenerator(names_person)
     persons = hg.get_persons(10)
+
+    player = Player("Ivan")
+    player.set_person(persons[0])
+    player.person.set_inventory([])
+    player.take_thing(Thing("Обычный меч", 0, 0, 15))
+    player.take_thing(Thing("Обычный меч", 0, 0, 15))
+    player.take_thing(Thing("Обычный меч", 0, 0, 15))
+    player.take_thing(Thing("Обычный меч", 0, 0, 15))
+    player.take_thing(Thing("Обычный меч", 0, 0, 15))
+
     arena = Arena(persons, things)
     arena.equip_randomly()
     arena.fight()
