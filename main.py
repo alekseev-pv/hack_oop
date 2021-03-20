@@ -5,6 +5,7 @@ from game_classes import (
     Arena,
     PersonsGenerator,
     Player,
+    NameGenerator,
 )
 
 if __name__ == "__main__":
@@ -45,8 +46,34 @@ if __name__ == "__main__":
         "Дамриган",
     ]
 
-    hg = PersonsGenerator(names_person)
-    persons = hg.get_persons(10)
+    nouns = [
+        "Топор",
+        "Дубина",
+        "Меч",
+        "Кираса",
+        "Кольцо",
+        "Щит",
+        "Сапоги",
+        "Кольчуга",
+    ]
+    subjects = [
+        "Алчности",
+        "Бестрашия",
+        "Бешенства",
+        "Трусости",
+        "Всевластия",
+        "Доброты",
+        "Смелости",
+        "Чести",
+        "Духа",
+        "Силы",
+    ]
+
+    names_thing_gen = NameGenerator(nouns, subjects)
+    names_thing = names_thing_gen.get_names(20)
+
+    persons_gen = PersonsGenerator(names_person)
+    persons = persons_gen.get_persons(10)
 
     player = Player("Ivan")
     # персонажа можно создать через консоль

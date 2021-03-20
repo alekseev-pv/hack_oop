@@ -1,5 +1,17 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Dict
 import random
+
+
+class NameGenerator:
+    def __init__(self, nouns: List[Dict], subjects: List[str]):
+        self.nouns = nouns
+        self.subjects = subjects
+
+    def get_names(self, number_names):
+        nouns = random.choices(self.nouns, k=number_names)
+        subjects = random.choices(self.subjects, k=number_names)
+
+        return [f"{nouns[i]} {subjects[i]}" for i in range(number_names)]
 
 
 class Thing:
