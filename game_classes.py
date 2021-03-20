@@ -1,5 +1,6 @@
 import random
 from typing import Dict, List, Optional, Tuple
+from colorama import Fore, Back, Style
 
 
 class NameGenerator:
@@ -300,14 +301,20 @@ class Arena:
         attacker: Person = couple_fighter[0]
         defender: Person = couple_fighter[1]
         damage = defender.reduce_hit_points(attacker.final_attack_damage)
+
+        col_attacker_name = f"{Fore.YELLOW}{attacker.name}{Style.RESET_ALL}"
+        col_kick = f"{Fore.RED}удар{Style.RESET_ALL}"
+        col_defender_name = f"{Fore.YELLOW}{defender.name}{Style.RESET_ALL}"
+        col_damage = f"{Fore.RED}{damage}{Style.RESET_ALL}"
+        col_die = f"{Back.RED}погиб{Style.RESET_ALL}"
         print(
-            f"{attacker.name} наносит удар "
-            f"по {defender.name} на {damage} урона"
+            f"{col_attacker_name} наносит {col_kick} "
+            f"по  {col_defender_name} на {col_damage} урона"
         )
 
         if defender.current_hit_points <= 0:
             self.persons.remove(defender)
-            print(f"{defender.name} погиб от рук {attacker.name} ")
+            print(f"{col_defender_name} {col_die} от рук {col_attacker_name}")
 
     def fight(self) -> Person:
         """возвращает победителя"""
