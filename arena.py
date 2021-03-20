@@ -6,6 +6,8 @@ from persons import Paladin, Warrior, Goblin, Elf
 
 
 class Arena:
+    init(autoreset=True)
+
     def __init__(self, name):
         self.name = name
         self._things = {}
@@ -20,8 +22,10 @@ class Arena:
     def get_persons(self):
         return self._persons
 
-    def create_persons(self, name_persons, count=10):
+    def create_persons(self, name_persons, count=10, get_person=None):
         class_persons = (Paladin, Warrior, Goblin, Elf)
+        if get_person:
+            class_persons = (get_person,)
         names = random.sample(name_persons, k=count)
         for i in range(count):
             name = names[i]
@@ -47,7 +51,6 @@ class Arena:
                 self._things[type_thing] = []
                 self._things[type_thing].append(Thing(name, defense, attack, hit_poins))
 
-
     def give_things_persons(self):
         for person in self.get_persons():
             count_thing = random.randint(0, 4)
@@ -58,14 +61,14 @@ class Arena:
             person.set_things(things)
 
     def get_one_person(self):
-        return self.get_persons().pop(random.randint(0, len(self.get_persons())-1))
+        return self.get_persons().pop(random.randint(0, len(self.get_persons()) - 1))
 
     def battle(self):
         persons = ', '.join(map(str, self.get_persons()))
         print(Back.LIGHTYELLOW_EX + Fore.GREEN + f'Участники: {persons}')
         while len(self.get_persons()) > 1:
             first_person = self.get_one_person()
-            second_person = self.get_persons()[random.randint(0, len(self.get_persons())-1)]
+            second_person = self.get_persons()[random.randint(0, len(self.get_persons()) - 1)]
             first_person.update_hp_after_attack(second_person)
             count_damage = second_person.attack_damage - second_person.attack_damage * first_person.final_protection
             print(Fore.GREEN + f'{second_person} ',
@@ -89,29 +92,23 @@ class Arena:
 
 
 if __name__ == '__main__':
-    init(autoreset=True)
-
     name_thing = {
         'голова': ('шляпа', 'шлем', 'косынка'),
         'тело': ('плащ', 'броня', 'роба', 'балахон'),
         'оружие': ('меч', 'булава', 'бластре', 'лук и стрелы', 'арбалет', 'нож',),
-        'шит': ('круглы щит', 'малый щит', 'большой щит',  'кожанный щит',),
+        'шит': ('круглы щит', 'малый щит', 'большой щит', 'кожанный щит',),
         'обувь': ('кеды', 'ботинки', 'сапоги',),
         'украшения': ('кольцо', 'амулет', 'браслет',),
     }
 
-    name_persons = ('Sandra', 'Graham', 'Joann', 'Phelps', 'Charles', 'Long',
-                   'Joyce', 'Johnson', 'Jerry', 'Yates', 'Linda', 'Morris',
-                   'Patricia',  'Matthews', 'Katherine', 'Walker', 'Linda',
-                   'Morales', 'Jared', 'Williams',)
+    name_persons = ('Sandra_bot', 'Graham_bot', 'Joann_bot', 'Phelps_bot', 'Charles_bot', 'Long_bot',
+                    'Joyce_bot', 'Johnson_bot', 'Jerry_bot', 'Yates_bot', 'Linda_bot', 'Morris_bot',
+                    'Patricia_bot', 'Matthews_bot', 'Katherine_bot', 'Walker_bot', 'Linda_bot',
+                    'Morales_bot', 'Jared_bot', 'Williams_bot',)
 
     arena = Arena('Колизей')
+    print(f'Битва проходит в {arena.name}')
     arena.creating_things(name_thing)
     arena.create_persons(name_persons)
     arena.give_things_persons()
     arena.battle()
-
-
-
-
-
