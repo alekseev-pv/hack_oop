@@ -4,14 +4,14 @@ from main import Paladin, Thing, Warrior
 
 # Вещи для бойцов
 THINGS_FOR_FIGHTERS = {
-    'helmet': Thing('helmet', 0.05, 0, 10),
-    'armor': Thing('armor', 0.1, 0, 15),
-    'pants': Thing('pants', 0.08, 0, 7),
-    'gloves': Thing('gloves', 0.03, 0, 5),
-    'boots': Thing('boots', 0.05, 0, 4),
-    'sword': Thing('sword', 0, 12, 0),
-    'bow': Thing('bow', 0, 15, 0),
-    'shield': Thing('shield', 0.1, 0, 0)
+    'шлем': Thing('шлем', 0.05, 0, 10),
+    'доспехи': Thing('доспехи', 0.1, 0, 15),
+    'штаны': Thing('штаны', 0.08, 0, 7),
+    'перчатки': Thing('перчатки', 0.03, 0, 5),
+    'ботинки': Thing('ботинки', 0.05, 0, 4),
+    'меч': Thing('меч', 0, 12, 0),
+    'лук': Thing('лук', 0, 15, 0),
+    'щит': Thing('щит', 0.1, 0, 0)
 }
 
 # Бойцы UFC
@@ -71,7 +71,11 @@ def game() -> None:
         print(f'Имя бойца: {fighter.person_name}, '
               f'Защита бойца: {fighter.person_protection}, '
               f'Атака бойца: {fighter.person_attack}, '
-              f'Здоровье бойца: {fighter.person_health}')
+              f'Здоровье бойца: {fighter.person_health}', end=', ')
+        print('Вещи бойца:', end=' ')
+        for thing in fighter.person_things:
+            print(f'{thing}', end=' ')
+        print()
 
     while len(fighters) > 1:
         print()

@@ -18,22 +18,25 @@ class Person:
     def __init__(self, person_name: str,
                  person_protection: float,
                  person_attack: int,
-                 person_health: int) -> None:
+                 person_health: int,
+                 person_things=None) -> None:
         self.person_name = person_name
         self.person_protection = person_protection
         self.person_attack = person_attack
         self.person_health = person_health
+        self.person_things = person_things
 
     def __str__(self) -> str:
         return self.person_name
 
-    def set_things(self, things: list) -> None:
+    def set_things(self, fighters_things: list) -> None:
         """Dress up the game character with items from the list."""
-        for thing in things:
+        for thing in fighters_things:
             self.person_protection += thing.thing_protection
             self.person_protection = round(self.person_protection, 2)
             self.person_attack += thing.thing_attack
             self.person_health += thing.thing_health
+            self.person_things = fighters_things
 
     def damage_to_health(self, attack_damage: int) -> None:
         """Calculates damage when attacking by another character."""
