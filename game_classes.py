@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Tuple, Optional
 import random
 
 
@@ -8,9 +8,9 @@ class Thing:
     def __init__(
         self,
         name: str,
-        hit_points: float,
-        protection: float,
-        attack_damage: float,
+        hit_points: float = 0,
+        protection: float = 0,
+        attack_damage: float = 0,
     ):
         self.name = name
         self.hit_points = hit_points
@@ -86,6 +86,31 @@ class Warrior(Person):
     ):
 
         super().__init__(name, hit_points, protection, attack_damage * 2)
+
+
+class HeroesGenerator:
+    MAX_HIT_POINT = 150
+    MIN_HIT_POINT = 50
+    MAX_PROTECTION = 0.4
+    MIN_PROTECTION = 0.0
+    MAX_ATTACK_DAMAGE = 40
+    MIN_ATTACL_DAMAGE = 5
+    CLASSES: Tuple[Paladin, Warrior] = (Paladin, Warrior)
+
+    def __init__(self, names: List[str]):
+        self.names = names
+
+    def get_hero(self):
+        name = random.choice(self.names)
+        hit_points = random.randint(self.MIN_HIT_POINT, self.MAX_HIT_POINT)
+        protection = random.uniform(self.MIN_PROTECTION, self.MAX_PROTECTION)
+        attack_damage = random.randint(
+            self.MIN_ATTACL_DAMAGE, self.MAX_ATTACK_DAMAGE
+        )
+
+        random_class = random.choice(self.CLASSES)
+        hero = random_class(name, hit_points, protection, attack_damage)
+        return hero
 
 
 class Arena:
