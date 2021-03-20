@@ -32,6 +32,7 @@ class Inventory:
         self.things: List[Thing] = []
 
     def add_thing(self, thing: Thing) -> bool:
+        """При переполнении инвентаря возвращает False"""
         if len(self.things) >= self.size:
             return False
         self.things.append(thing)
@@ -110,9 +111,12 @@ class Person:
         self.inventory.set_things(things)
         self.update_characteristics()
 
-    def add_thing(self, thing: Thing):
-        self.inventory.add_thing(thing)
+    def add_thing(self, thing: Thing) -> bool:
+        """При переполнении инвентаря возвращает False"""
+        if not self.inventory.add_thing(thing):
+            return False
         self.update_characteristics()
+        return True
 
     def reduce_hit_points(self, attack_damage: float) -> float:
         final_damage = attack_damage - attack_damage * self.final_protection
@@ -195,7 +199,9 @@ class Player:
 
     def take_thing(self, thing: Thing):
         if self.person.add_thing(thing):
-            print(f"self.person взял {thing.name}")
+            print(f"{self.person} взял {thing.name}")
+        else:
+            print(f"У {self.person} переполнился инвентарь")
 
 
 class Arena:
