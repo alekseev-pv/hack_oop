@@ -31,6 +31,9 @@ class Thing:
         self.protection = protection
         self.attack_damage = attack_damage
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class ThingsGenerator:
     MAX_MULTIPLIER_HIT_POINTS = 1
@@ -89,6 +92,10 @@ class Inventory:
 
     def remove_thing(self, index):
         self.things.pop(index)
+
+    def __str__(self) -> str:
+        names_of_thing = [thing.name for thing in self.things]
+        return ", ".join(names_of_thing)
 
 
 class Person:
@@ -198,6 +205,9 @@ class Warrior(Person):
         super().__init__(name, hit_points, protection, attack_damage * 2)
 
 
+CLASSES_PESRONS: Tuple[Paladin, Warrior] = (Paladin, Warrior)
+
+
 class PersonsGenerator:
     MAX_HIT_POINT = 150
     MIN_HIT_POINT = 50
@@ -205,7 +215,7 @@ class PersonsGenerator:
     MIN_PROTECTION = 0.0
     MAX_ATTACK_DAMAGE = 40
     MIN_ATTACL_DAMAGE = 5
-    CLASSES: Tuple[Paladin, Warrior] = (Paladin, Warrior)
+    CLASSES = CLASSES_PESRONS
 
     def __init__(self, names: List[str]):
         self.names = names
@@ -231,7 +241,7 @@ class PersonsGenerator:
 
 
 class Player:
-    classes_persons = [Paladin, Warrior]
+    classes_persons = CLASSES_PESRONS
 
     def __init__(
         self,
@@ -246,7 +256,7 @@ class Player:
 
     def _choose_class(self) -> Person:
         print("Выберете класс")
-        for i, cl in enumerate(self.classes_persons):
+        for i, cl in enumerate(self.CLASSES_PESRONS):
             print(f"{i}) {cl.__name__}")
         try:
             number_class = int(input("Введите номер класса\n"))
@@ -254,15 +264,15 @@ class Player:
             print("некорректный ввод, попробуйте ещё раз")
             return self._choose_class()
 
-        if 0 <= number_class < len(self.classes_persons):
-            return self.classes_persons[number_class]
+        if 0 <= number_class < len(self.CLASSES_PESRONS):
+            return self.CLASSES_PESRONS[number_class]
         else:
             print("некорректный ввод, попробуйте ещё раз")
             return self._choose_class()
 
     def create_person(self):
 
-        class_person = self._choose_class()
+        class_person: Person = self._choose_class()
         name = input("Введите имя персонажа\n")
         hit_point = int(input("Введите количество очков здоровья\n"))
         protection = int(input("Введите количество % бронки\n")) / 100

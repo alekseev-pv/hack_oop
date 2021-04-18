@@ -2,4 +2,4 @@
 .gitignore
 venv/
 trash.py
-
+__pycache__/
