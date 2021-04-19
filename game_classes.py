@@ -142,14 +142,13 @@ class Inventory:
 
 
 class Person:
-    MAX_SIZE_INVENTORY = 4
-
     def __init__(
         self,
         name: str,
         hit_points: float,
         protection: float,
         attack_damage: float,
+        size_inventory: int = 4,
     ):
         self.name = name
 
@@ -163,7 +162,7 @@ class Person:
         self.attack_damage = attack_damage
         self.final_attack_damage = attack_damage
 
-        self.inventory = Inventory(self.MAX_SIZE_INVENTORY)
+        self.inventory = Inventory(size_inventory)
 
     def _update_protection(self):
         bonus_protection = sum(
@@ -200,6 +199,13 @@ class Person:
         self._update_protection()
         self._update_attack_damage()
         self._update_hit_points()
+
+    def take_thing(self, thing: Thing) -> bool:
+        """Возвращает False в случае перполнения инвентаря"""
+        if self.inventory.number_empty_slots < 1:
+            return False
+        self.inventory.append(thing)
+        return True
 
     def set_inventory(self, things: List[Thing]):
         self.inventory.set_things(things)
@@ -318,12 +324,11 @@ class Player:
 
         self.set_person(person)
 
-    def take_thing(self, thing: Thing):
-        if self.person.inventory.number_empty_slots < 0:
+    def take_thing(self, thing: Thing) -> None:
+        if self.person.take_thing(Thing):
+            print(f"{self.person} взял {thing.name}")
+        else:
             print(f"У {self.person} переполнился инвентарь")
-
-        self.person.inventory.append(thing)
-        print(f"{self.person} взял {thing.name}")
 
 
 class Arena:
