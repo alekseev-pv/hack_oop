@@ -10,7 +10,7 @@ SIZE_INVENTORY = 5
 @pytest.fixture
 def person() -> Person:
     person = Person(
-        name="Тестер", hit_points=HP, protection=PROTECTION, attack_damage=40
+        name="Тестер", hit_points=HP, protection=0, attack_damage=40
     )
     return person
 
@@ -53,7 +53,7 @@ class TestPerson:
     def test_reduce_hit_points(self, person: Person) -> None:
         damage = 50
         person.reduce_hit_points(damage)
-        exept_hp = HP - damage * (1 - PROTECTION)
+        exept_hp = HP - damage * (1 - person.protection)
         assert person.current_hit_points == exept_hp
 
     def test_take_thing(self, person: Person) -> None:
@@ -81,3 +81,24 @@ class TestPerson:
         assert not person.inventory.append(
             sword
         ), "Не произошло переполнения инвентаря"
+
+    def test__update_protection(self, person: Person) -> None:
+        shield = Thing(
+            name="Щита",
+            protection=0.1,
+        )
+        person.take_thing(shield)
+        assert (
+            person.final_protection == shield.protection
+        ), "Показатель брони не увеличился"
+
+    def test__update_attack_damage(self, person: Person) -> None:
+        sword = Thing(
+            name="Мечь",
+            attack_damage=10,
+        )
+        person.take_thing(sword)
+        assert (
+            person.final_attack_damage
+            == person.attack_damage + sword.attack_damage
+        ), "Показатель атаки не увеличился"
