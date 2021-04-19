@@ -204,6 +204,7 @@ class Person:
         """Возвращает False в случае перполнения инвентаря"""
         if self.inventory.number_empty_slots < 1:
             return False
+        self.update_characteristics()
         self.inventory.append(thing)
         return True
 
