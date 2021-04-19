@@ -85,6 +85,10 @@ class Inventory:
         self.things.append(thing)
         return True
 
+    @property
+    def number_empty_slots(self):
+        return self.size - len(self.things) - 1
+
     def set_things(self, things: List[Thing]):
         if len(self.things) > self.size:
             raise InventoryOverflowError
@@ -96,6 +100,45 @@ class Inventory:
     def __str__(self) -> str:
         names_of_thing = [thing.name for thing in self.things]
         return ", ".join(names_of_thing)
+
+    def __len__(self) -> int:
+        return len(self.things)
+
+    def __getitem__(self, key: int) -> Thing:
+        return self.things[key]
+
+    def __setitem__(self, key: int, thing: Thing) -> None:
+        self.things[key] = thing
+
+    def __delitem__(self, key: int) -> None:
+        del self.things[key]
+
+    def __iter__(self):
+        return iter(self.values)
+
+    def append(self, thing: Thing) -> None:
+        """Выбрасывает ошибку при переполнении инвертаря"""
+        if len(self.things) >= self.size:
+            raise InventoryOverflowError
+        self.things.append(thing)
+
+    def head(self) -> Thing:
+        return self.things[0]
+
+    def tail(self) -> List[Thing]:
+        return self.things[1:]
+
+    def init(self) -> List[Thing]:
+        return self.things[:-1]
+
+    def last(self) -> List[Thing]:
+        return self.things[-1]
+
+    def drop(self, n) -> List[Thing]:
+        return self.things[n:]
+
+    def take(self, n) -> List[Thing]:
+        return self.things[:n]
 
 
 class Person:
@@ -161,13 +204,6 @@ class Person:
     def set_inventory(self, things: List[Thing]):
         self.inventory.set_things(things)
         self.update_characteristics()
-
-    def add_thing(self, thing: Thing) -> bool:
-        """При переполнении инвентаря возвращает False"""
-        if not self.inventory.add_thing(thing):
-            return False
-        self.update_characteristics()
-        return True
 
     def reduce_hit_points(self, attack_damage: float) -> float:
         final_damage = attack_damage - attack_damage * self.final_protection
@@ -283,10 +319,11 @@ class Player:
         self.set_person(person)
 
     def take_thing(self, thing: Thing):
-        if self.person.add_thing(thing):
-            print(f"{self.person} взял {thing.name}")
-        else:
+        if self.person.inventory.number_empty_slots < 0:
             print(f"У {self.person} переполнился инвентарь")
+
+        self.person.inventory.append(thing)
+        print(f"{self.person} взял {thing.name}")
 
 
 class Arena:
