@@ -173,9 +173,7 @@ class Person:
         self.inventory = Inventory(size_inventory)
 
     def _update_protection(self):
-        bonus_protection = sum(
-            [thing.protection for thing in self.inventory]
-        )
+        bonus_protection = sum([thing.protection for thing in self.inventory])
         self.final_protection = self.protection + bonus_protection
 
     def _update_attack_damage(self):
@@ -334,7 +332,7 @@ class Player:
         self.set_person(person)
 
     def take_thing(self, thing: Thing) -> None:
-        if self.person.take_thing(Thing):
+        if self.person.take_thing(thing):
             print(f"{self.person} взял {thing.name}")
         else:
             print(f"У {self.person} переполнился инвентарь")
