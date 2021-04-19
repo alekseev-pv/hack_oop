@@ -77,6 +77,7 @@ class Inventory:
     def __init__(self, size: int):
         self.size = size
         self.things: List[Thing] = []
+        self.counter = 0
 
     def add_thing(self, thing: Thing) -> bool:
         """При переполнении инвентаря возвращает False"""
@@ -114,7 +115,14 @@ class Inventory:
         del self.things[key]
 
     def __iter__(self):
-        return iter(self.values)
+        return self
+
+    def __next__(self):
+        if self.counter < len(self.things):
+            self.counter += 1
+            return self.things[self.counter - 1]
+        else:
+            raise StopIteration
 
     def append(self, thing: Thing) -> None:
         """Выбрасывает ошибку при переполнении инвертаря"""
@@ -166,7 +174,7 @@ class Person:
 
     def _update_protection(self):
         bonus_protection = sum(
-            [thing.protection for thing in self.inventory.things]
+            [thing.protection for thing in self.inventory]
         )
         self.final_protection = self.protection + bonus_protection
 
