@@ -1,5 +1,13 @@
-from game_classes import (Arena, NameGenerator, Paladin, PersonsGenerator,
-                          Player, Thing, ThingsGenerator, Warrior)
+from game_classes import (
+    Arena,
+    NameGenerator,
+    Paladin,
+    PersonsGenerator,
+    Player,
+    Thing,
+    ThingsGenerator,
+    Warrior,
+)
 
 if __name__ == "__main__":
 
@@ -66,7 +74,14 @@ if __name__ == "__main__":
     )
 
     player.set_person(player_person)
-    player.take_thing(Thing("Обычный меч", 0, 0, 15))
+    player.take_thing(
+        Thing(
+            name="Обычный меч",
+            protection=0,
+            multiplier_hit_points=0,
+            attack_damage=15,
+        )
+    )
     player.take_thing(Thing("Обычный меч", 0, 0, 15))
     player.take_thing(Thing("Кольцо бешенства", 0, -0.05, 15))
     player.take_thing(Thing("Сапоги", 0, 0.05, 0))

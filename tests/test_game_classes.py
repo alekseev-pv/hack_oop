@@ -55,12 +55,6 @@ class TestInventory:
 
 
 class TestPerson:
-    def test_reduce_hit_points(self, person: Person) -> None:
-        damage = 50
-        person.reduce_hit_points(damage)
-        exept_hp = HP - damage * (1 - person.protection)
-        assert person.current_hit_points == exept_hp
-
     def test_take_thing(self, person: Person) -> None:
         sword = Thing(
             name="Мечь",

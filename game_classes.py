@@ -1,5 +1,6 @@
 import random
 from typing import Dict, List, Optional, Tuple
+from dataclasses import dataclass
 
 from colorama import Back, Fore, Style
 
@@ -158,10 +159,17 @@ class DefenderMixin:
         self.protection: float
         self.final_protection: float
 
-    def take_damage(self, damage: float):
+    def take_damage(self, damage: float) -> float:
         final_damage = damage - damage * self.final_protection
         final_damage = round(final_damage, 2)
         self.current_hit_points -= final_damage
+        return final_damage
+
+
+@dataclass
+class DamageSentTaken:
+    sent: float
+    taken: float
 
 
 class AttackerMixin:
@@ -169,8 +177,9 @@ class AttackerMixin:
         self.attack_damage: float
         self.final_attack_damage: float
 
-    def attack(self, defender: DefenderMixin):
-        defender.take_damage(self.final_attack_damage)
+    def attack(self, defender: DefenderMixin) -> DamageSentTaken:
+        damage_taken = defender.take_damage(self.final_attack_damage)
+        return DamageSentTaken(self.final_attack_damage, damage_taken)
 
 
 class Person(DefenderMixin, AttackerMixin):
@@ -241,12 +250,6 @@ class Person(DefenderMixin, AttackerMixin):
     def set_inventory(self, things: List[Thing]):
         self.inventory.set_things(things)
         self.update_characteristics()
-
-    def reduce_hit_points(self, attack_damage: float) -> float:
-        final_damage = attack_damage - attack_damage * self.final_protection
-        final_damage = round(final_damage, 2)
-        self.current_hit_points -= final_damage
-        return final_damage
 
     def __str__(self):
         return f"{self.__class__.__name__} {self.name}"
@@ -384,12 +387,13 @@ class Arena:
         couple_fighter = random.sample(self.persons, k=2)
         attacker: Person = couple_fighter[0]
         defender: Person = couple_fighter[1]
-        damage = defender.reduce_hit_points(attacker.final_attack_damage)
+        damage_sent_taken = attacker.attack(defender)
+        damage_taken = damage_sent_taken.taken
 
         col_attacker_name = f"{Fore.YELLOW}{attacker.name}{Style.RESET_ALL}"
         col_kick = f"{Fore.RED}удар{Style.RESET_ALL}"
         col_defender_name = f"{Fore.YELLOW}{defender.name}{Style.RESET_ALL}"
-        col_damage = f"{Fore.RED}{damage}{Style.RESET_ALL}"
+        col_damage = f"{Fore.RED}{damage_taken}{Style.RESET_ALL}"
         col_die = f"{Back.RED}погиб{Style.RESET_ALL}"
         print(
             f"{col_attacker_name} наносит {col_kick} "
