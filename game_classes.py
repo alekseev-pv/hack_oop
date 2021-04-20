@@ -149,7 +149,31 @@ class Inventory:
         return self.things[:n]
 
 
-class Person:
+class DefenderMixin:
+    def __init__(self):
+        self.hit_points: float
+        self.current_hit_points: float
+        self.final_hit_points: float
+
+        self.protection: float
+        self.final_protection: float
+
+    def take_damage(self, damage: float):
+        final_damage = damage - damage * self.final_protection
+        final_damage = round(final_damage, 2)
+        self.current_hit_points -= final_damage
+
+
+class AttackerMixin:
+    def __init__(self):
+        self.attack_damage: float
+        self.final_attack_damage: float
+
+    def attack(self, defender: DefenderMixin):
+        defender.take_damage(self.final_attack_damage)
+
+
+class Person(DefenderMixin, AttackerMixin):
     def __init__(
         self,
         name: str,

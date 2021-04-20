@@ -102,3 +102,16 @@ class TestPerson:
             person.final_attack_damage
             == person.attack_damage + sword.attack_damage
         ), "Показатель атаки не увеличился"
+
+    def test__update_hit_points(self, person: Person) -> None:
+        ring_of_health = Thing(
+            name="Кольцо здоровья",
+            multiplier_hit_points=0.5,
+        )
+        person.take_thing(ring_of_health)
+        exept_final_hp = person.hit_points * (
+            1 + ring_of_health.multiplier_hit_points
+        )
+        assert (
+            person.final_hit_points == exept_final_hp
+        ), "Показатель здоровья не увеличился"
