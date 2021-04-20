@@ -1,5 +1,10 @@
 import pytest
-from game_classes import Person, Thing, Inventory, InventoryOverflowError
+from game_classes import (
+    Person,
+    Thing,
+    Inventory,
+    InventoryOverflowError,
+)
 
 
 PROTECTION = 0.1
@@ -108,10 +113,36 @@ class TestPerson:
             name="Кольцо здоровья",
             multiplier_hit_points=0.5,
         )
+        person.current_hit_points = 50
+        exept_current_hp = person.current_hit_points * (
+            1 + ring_of_health.multiplier_hit_points
+        )
         person.take_thing(ring_of_health)
         exept_final_hp = person.hit_points * (
             1 + ring_of_health.multiplier_hit_points
         )
+
         assert (
             person.final_hit_points == exept_final_hp
         ), "Показатель здоровья не увеличился"
+        assert (
+            person.current_hit_points == exept_current_hp
+        ), "Текущее здоровье не увеличилось"
+
+    def test_attack_damage(self, person: Person) -> None:
+        attacker = Person(
+            name="Атакующий", hit_points=100, protection=0, attack_damage=100
+        )
+
+        defender = Person(
+            name="Атакующий", hit_points=100, protection=0.5, attack_damage=0
+        )
+        expect_hp = (
+            defender.current_hit_points
+            - defender.final_protection * attacker.final_attack_damage
+        )
+        attacker.attack(defender)
+
+        assert (
+            defender.current_hit_points == expect_hp
+        ), "Неверный расчёт дамага"
