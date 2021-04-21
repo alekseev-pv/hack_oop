@@ -162,6 +162,14 @@ class Inventory:
         return self.things[:n]
 
 
+@dataclass
+class AttackReport:
+    attacker: object
+    defender: object
+    damag_sent: float
+    damage_taken: float
+
+
 class DefenderMixin:
     def __init__(self):
         self.hit_points: float
@@ -178,20 +186,19 @@ class DefenderMixin:
         return final_damage
 
 
-@dataclass
-class DamageSentTaken:
-    sent: float
-    taken: float
-
-
 class AttackerMixin:
     def __init__(self):
         self.attack_damage: float
         self.final_attack_damage: float
 
-    def attack(self, defender: DefenderMixin) -> DamageSentTaken:
-        damage_taken = defender.take_damage(self.final_attack_damage)
-        return DamageSentTaken(self.final_attack_damage, damage_taken)
+    def attack(self, defender: DefenderMixin) -> AttackReport:
+        taken_damage = defender.take_damage(self.final_attack_damage)
+        return AttackReport(
+            attacker=self,
+            defender=defender,
+            damag_sent=self.final_attack_damage,
+            damage_taken=taken_damage,
+        )
 
 
 class Person(DefenderMixin, AttackerMixin):
@@ -399,26 +406,38 @@ class Arena:
     def add_player(self, player: Player):
         self.persons.append(player.person)
 
-    def round_fight(self):
-        couple_fighter = random.sample(self.persons, k=2)
-        attacker: Person = couple_fighter[0]
-        defender: Person = couple_fighter[1]
-        damage_sent_taken = attacker.attack(defender)
-        damage_taken = damage_sent_taken.taken
+    def show_fight_report(self, attack_report=AttackReport):
+        damage_taken = attack_report.damage_taken
 
-        col_attacker_name = f"{Fore.YELLOW}{attacker.name}{Style.RESET_ALL}"
+        col_attacker_name = (
+            f"{Fore.YELLOW}{attack_report.attacker.name}{Style.RESET_ALL}"
+        )
         col_kick = f"{Fore.RED}удар{Style.RESET_ALL}"
-        col_defender_name = f"{Fore.YELLOW}{defender.name}{Style.RESET_ALL}"
+        col_defender_name = (
+            f"{Fore.YELLOW}{attack_report.defender.name}{Style.RESET_ALL}"
+        )
         col_damage = f"{Fore.RED}{damage_taken}{Style.RESET_ALL}"
-        col_die = f"{Back.RED}погиб{Style.RESET_ALL}"
         print(
             f"{col_attacker_name} наносит {col_kick} "
             f"по  {col_defender_name} на {col_damage} урона"
         )
 
+    def show_die_report(self, attacker: Person, defender: Person):
+        col_defender_name = f"{Fore.YELLOW}{defender.name}{Style.RESET_ALL}"
+        col_attacker_name = f"{Fore.YELLOW}{attacker.name}{Style.RESET_ALL}"
+        col_die = f"{Back.RED}погиб{Style.RESET_ALL}"
+        print(f"{col_defender_name} {col_die} от рук {col_attacker_name}")
+
+    def round_fight(self):
+        couple_fighter = random.sample(self.persons, k=2)
+        attacker: Person = couple_fighter[0]
+        defender: Person = couple_fighter[1]
+        attack_report = attacker.attack(defender)
+        self.show_fight_report(attack_report)
+
         if defender.current_hit_points <= 0:
             self.persons.remove(defender)
-            print(f"{col_defender_name} {col_die} от рук {col_attacker_name}")
+            self.show_die_report(attacker, defender)
 
     def fight(self) -> Person:
         """возвращает победителя"""
