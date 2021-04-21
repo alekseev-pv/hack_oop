@@ -74,6 +74,10 @@ class InventoryOverflowError(InventoryError):
     pass
 
 
+class DropThingError(Exception):
+    pass
+
+
 class Inventory:
     def __init__(self, size: int):
         self.size = size
@@ -86,6 +90,14 @@ class Inventory:
             return False
         self.things.append(thing)
         return True
+
+    def drop_thing(self, thing: Thing = None, index: int = None):
+        if thing is None and index is None:
+            raise DropThingError
+        if thing is not None:
+            self.things.remove(thing)
+        else:
+            del self.things[index]
 
     @property
     def number_empty_slots(self):
@@ -246,6 +258,9 @@ class Person(DefenderMixin, AttackerMixin):
         self.inventory.append(thing)
         self.update_characteristics()
         return True
+
+    def drop_thing(self, thing: Thing = None, index: int = None):
+        self.inventory.drop_thing(thing=thing, index=index)
 
     def set_inventory(self, things: List[Thing]):
         self.inventory.set_things(things)

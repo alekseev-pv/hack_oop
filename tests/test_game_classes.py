@@ -1,6 +1,8 @@
 import pytest
 from game_classes import (
     Person,
+    Warrior,
+    Paladin,
     Thing,
     Inventory,
     InventoryOverflowError,
@@ -55,17 +57,40 @@ class TestInventory:
 
 
 class TestPerson:
-    def test_take_thing(self, person: Person) -> None:
-        sword = Thing(
-            name="Мечь",
-            multiplier_hit_points=0.1,
-            protection=0.1,
-            attack_damage=10,
-        )
+    def test_take_thing(self, person: Person, sword: Thing) -> None:
         for _ in range(len(person.inventory)):
             assert person.inventory.append(
                 sword
             ), "Преждевременно переполнение инвентаря"
+
+    def test_drop_thing(self, person: Person) -> None:
+        sword = Thing(
+            name="Мечь",
+            multiplier_hit_points=0,
+            protection=0,
+            attack_damage=10,
+        )
+        ring = Thing(
+            name="Кольцо",
+            multiplier_hit_points=0.3,
+            protection=0,
+            attack_damage=0,
+        )
+        shield = Thing(
+            name="Щит",
+            multiplier_hit_points=0,
+            protection=0.2,
+            attack_damage=0,
+        )
+        person.take_thing(sword)
+        person.take_thing(ring)
+        person.take_thing(shield)
+
+        person.drop_thing(thing=ring)
+        assert person.inventory[0] == sword and person.inventory[1] == shield
+
+        person.drop_thing(index=0)
+        assert person.inventory[0] == shield
 
     def test_inventory_overflow(self, person: Person) -> None:
         sword = Thing(
@@ -140,3 +165,24 @@ class TestPerson:
         assert (
             defender.current_hit_points == expect_hp
         ), "Неверный расчёт дамага"
+
+
+class TestWarrior:
+    attack = 100
+    warrior = Warrior(
+        name="Воин", hit_points=100, protection=0.1, attack_damage=attack
+    )
+    assert warrior.attack_damage == attack * 2
+
+
+class TestPaladin:
+    protection = 0.1
+    hit_points = 100
+    paladin = Paladin(
+        name="Воин",
+        hit_points=hit_points,
+        protection=protection,
+        attack_damage=1,
+    )
+    assert paladin.hit_points == hit_points * 2
+    assert paladin.protection == protection * 2
