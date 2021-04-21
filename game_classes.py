@@ -261,6 +261,7 @@ class Person(DefenderMixin, AttackerMixin):
 
     def drop_thing(self, thing: Thing = None, index: int = None):
         self.inventory.drop_thing(thing=thing, index=index)
+        self.update_characteristics()
 
     def set_inventory(self, things: List[Thing]):
         self.inventory.set_things(things)
