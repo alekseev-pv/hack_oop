@@ -185,6 +185,11 @@ class DefenderMixin:
         self.current_hit_points -= final_damage
         return final_damage
 
+    def is_alive(self) -> bool:
+        if self.current_hit_points <= 0:
+            return False
+        return True
+
 
 class AttackerMixin:
     def __init__(self):
@@ -435,7 +440,7 @@ class Arena:
         attack_report = attacker.attack(defender)
         self.show_fight_report(attack_report)
 
-        if defender.current_hit_points <= 0:
+        if not defender.is_alive():
             self.persons.remove(defender)
             self.show_die_report(attacker, defender)
 
