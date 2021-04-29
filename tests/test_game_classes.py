@@ -1,11 +1,5 @@
 import pytest
-from package.game_classes import (
-    Person,
-    Warrior,
-    Paladin,
-    Thing,
-    Inventory
-)
+from package.game_classes import Person, Warrior, Paladin, Thing, Inventory
 from package.errors import InventoryOverflowError
 
 
@@ -168,21 +162,34 @@ class TestPerson:
 
 
 class TestWarrior:
-    attack = 100
-    warrior = Warrior(
-        name="Воин", hit_points=100, protection=0.1, attack_damage=attack
-    )
-    assert warrior.attack_damage == attack * 2
+    def test_attack_bonus(self):
+        attack = 100
+        warrior = Warrior(
+            name="Воин", hit_points=100, protection=0.1, attack_damage=attack
+        )
+        assert warrior.attack_damage == attack * 2
 
 
 class TestPaladin:
-    protection = 0.1
-    hit_points = 100
-    paladin = Paladin(
-        name="Воин",
-        hit_points=hit_points,
-        protection=protection,
-        attack_damage=1,
-    )
-    assert paladin.hit_points == hit_points * 2
-    assert paladin.protection == protection * 2
+    def test_protection_bonus(self):
+        protection = 0.1
+        hit_points = 100
+        paladin = Paladin(
+            name="Воин",
+            hit_points=hit_points,
+            protection=protection,
+            attack_damage=1,
+        )
+
+        assert paladin.protection == protection * 2
+
+    def test_hit_points_bonus(self):
+        protection = 0.1
+        hit_points = 100
+        paladin = Paladin(
+            name="Воин",
+            hit_points=hit_points,
+            protection=protection,
+            attack_damage=1,
+        )
+        assert paladin.hit_points == hit_points * 2
