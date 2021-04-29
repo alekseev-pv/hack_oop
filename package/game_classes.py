@@ -262,10 +262,7 @@ CLASSES_PESRONS: Tuple[Paladin, Warrior] = (Paladin, Warrior)
 class Player:
     classes_persons = CLASSES_PESRONS
 
-    def __init__(
-        self,
-        name: str,
-    ):
+    def __init__(self, name: str):
         self.name = name
         self.person: Optional[Person] = None
 
@@ -275,7 +272,7 @@ class Player:
 
     def _choose_class(self) -> Person:
         print("Выберете класс")
-        for i, cl in enumerate(self.CLASSES_PESRONS):
+        for i, cl in enumerate(self.classes_persons):
             print(f"{i}) {cl.__name__}")
         try:
             number_class = int(input("Введите номер класса\n"))
@@ -283,8 +280,8 @@ class Player:
             print("некорректный ввод, попробуйте ещё раз")
             return self._choose_class()
 
-        if 0 <= number_class < len(self.CLASSES_PESRONS):
-            return self.CLASSES_PESRONS[number_class]
+        if 0 <= number_class < len(self.classes_persons):
+            return self.classes_persons[number_class]
         else:
             print("некорректный ввод, попробуйте ещё раз")
             return self._choose_class()
