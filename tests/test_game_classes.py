@@ -1,12 +1,12 @@
 import pytest
-from game_classes import (
+from package.game_classes import (
     Person,
     Warrior,
     Paladin,
     Thing,
-    Inventory,
-    InventoryOverflowError,
+    Inventory
 )
+from package.errors import InventoryOverflowError
 
 
 PROTECTION = 0.1

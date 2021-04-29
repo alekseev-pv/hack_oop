@@ -1,13 +1,11 @@
-from game_classes import (
+from package.game_classes import (
     Arena,
-    NameGenerator,
-    Paladin,
-    PersonsGenerator,
     Player,
     Thing,
-    ThingsGenerator,
     Warrior,
+    Paladin
 )
+from package.utilities import ThingsGenerator, NameGenerator, PersonsGenerator
 
 if __name__ == "__main__":
 
@@ -63,7 +61,7 @@ if __name__ == "__main__":
     things_gen = ThingsGenerator(names_thing)
     things = things_gen.get_things()
 
-    persons_gen = PersonsGenerator(names_person)
+    persons_gen = PersonsGenerator(names_person, [Paladin, Warrior])
     persons = persons_gen.get_persons(10)
 
     player = Player("Ivan")
